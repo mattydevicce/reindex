@@ -1,0 +1,42 @@
+<%= form_for(feed_info) do |f| %>
+  <% if feed_info.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(feed_info.errors.count, "error") %> prohibited this feed_info from being saved:</h2>
+
+      <ul>
+      <% feed_info.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :feed_publisher_name %>
+    <%= f.text_field :feed_publisher_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :feed_publisher_url %>
+    <%= f.text_field :feed_publisher_url %>
+  </div>
+
+  <div class="field">
+    <%= f.label :feed_timezone %>
+    <%= f.text_field :feed_timezone %>
+  </div>
+
+  <div class="field">
+    <%= f.label :feed_lang %>
+    <%= f.text_field :feed_lang %>
+  </div>
+
+  <div class="field">
+    <%= f.label :feed_version %>
+    <%= f.text_field :feed_version %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

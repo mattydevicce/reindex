@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Feed publisher name:</strong>
+  <%= @feed_info.feed_publisher_name %>
+</p>
+
+<p>
+  <strong>Feed publisher url:</strong>
+  <%= @feed_info.feed_publisher_url %>
+</p>
+
+<p>
+  <strong>Feed timezone:</strong>
+  <%= @feed_info.feed_timezone %>
+</p>
+
+<p>
+  <strong>Feed lang:</strong>
+  <%= @feed_info.feed_lang %>
+</p>
+
+<p>
+  <strong>Feed version:</strong>
+  <%= @feed_info.feed_version %>
+</p>
+
+<%= link_to 'Edit', edit_feed_info_path(@feed_info) %> |
+<%= link_to 'Back', feed_infos_path %>

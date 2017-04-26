@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  feed_publisher_name: MyString
+  feed_publisher_url: MyString
+  feed_timezone: MyString
+  feed_lang: MyString
+  feed_version: MyString
+
+two:
+  feed_publisher_name: MyString
+  feed_publisher_url: MyString
+  feed_timezone: MyString
+  feed_lang: MyString
+  feed_version: MyString

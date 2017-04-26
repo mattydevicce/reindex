@@ -1,0 +1,42 @@
+<%= form_for(stop_time) do |f| %>
+  <% if stop_time.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(stop_time.errors.count, "error") %> prohibited this stop_time from being saved:</h2>
+
+      <ul>
+      <% stop_time.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :trip_id %>
+    <%= f.number_field :trip_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :arrival_time %>
+    <%= f.time_select :arrival_time %>
+  </div>
+
+  <div class="field">
+    <%= f.label :departure_time %>
+    <%= f.time_select :departure_time %>
+  </div>
+
+  <div class="field">
+    <%= f.label :stop_id %>
+    <%= f.number_field :stop_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :stop %>
+    <%= f.text_field :stop %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

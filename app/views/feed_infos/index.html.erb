@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Feed Infos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feed publisher name</th>
+      <th>Feed publisher url</th>
+      <th>Feed timezone</th>
+      <th>Feed lang</th>
+      <th>Feed version</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @feed_infos.each do |feed_info| %>
+      <tr>
+        <td><%= feed_info.feed_publisher_name %></td>
+        <td><%= feed_info.feed_publisher_url %></td>
+        <td><%= feed_info.feed_timezone %></td>
+        <td><%= feed_info.feed_lang %></td>
+        <td><%= feed_info.feed_version %></td>
+        <td><%= link_to 'Show', feed_info %></td>
+        <td><%= link_to 'Edit', edit_feed_info_path(feed_info) %></td>
+        <td><%= link_to 'Destroy', feed_info, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Feed Info', new_feed_info_path %>
