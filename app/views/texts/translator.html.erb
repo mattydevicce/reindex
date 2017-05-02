@@ -1,0 +1,5 @@
+<%= form_for @text, url: '/texts/translate', method: :translate do |f|  %>
+	<%= f.text_area :primary %>
+	<%= f.text_area :foreign %>
+	<%= f.submit %>
+<% end %>

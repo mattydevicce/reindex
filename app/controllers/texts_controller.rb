@@ -7,12 +7,61 @@ class TextsController < ApplicationController
     @texts = Text.all
   end
 
+  def translator
+    @text = Text.new
+  end
+
   # GET /texts/1
   # GET /texts/1.json
   def show
+    @translate
     @uploaded_text = ''
+    translation_map = []
   end
+  
+  def translate
+    primary_key_location = 0
+    foriegn_key_location = 0
+    # These loop through the column names and find the location of the matching key value pairs
+    params[:text][:primary].split(/\r\n/).first.split(',').each_with_index do |primary_column_name, index1|
+      params[:text][:foreign].split(/\r\n/).first.split(/, |,/).each_with_index do |foriegn_column_name, index2|
+        puts foriegn_column_name.length
+        puts foriegn_column_name
+        if foriegn_column_name == primary_column_name
+          primary_key_location = index1
+          foriegn_key_location = index2
+        end
+      end
+    end
 
+    puts primary_key_location
+    puts foriegn_key_location
+    puts params[:text][:primary][0]
+
+    # Need to order the primary text so it is easier to change it up
+    params[:text][:primary].each_line do |p_line|
+      params[:text][:foreign].each_line do |f_line|
+
+      end
+      
+      puts p_line
+    end
+    @primary = params[:text][:primary]
+    @foreign = params[:text][:foriegn]
+    orderindex = 1
+    params[:text][:primary].split(/, |,/).sort do |x,y|
+      if (orderindex != 1)
+        puts 'yo'
+        # x.split(',')[primary_key_location] <=> y.split(',')[primary_key_location]}
+      else
+        orderindex += 1
+      end
+    end
+    puts 'printing a'
+    puts a
+    puts 'translasdsadate'
+  end
+    
   # GET /texts/new
   def new
     @text = Text.new
