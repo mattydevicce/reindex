@@ -1,4 +1,5 @@
 class TextsController < ApplicationController
+  require 'pry'
   before_action :set_text, only: [:show, :edit, :update, :destroy]
 
   # GET /texts
@@ -8,27 +9,9 @@ class TextsController < ApplicationController
   end
 
   def translator
+    puts Text.new
     @text = Text.new
-    @primary = "'stop_id','stop_name','stop_lat','stop_lon'
-'1','Long Island City','40.74128','-73.95639'
-'2','Hunterspoint Avenue','40.74238','-73.94679'
-'9','Woodside','40.74584','-73.90297'
-'8','Penn Station','40.75058','-73.99358'
-'10','Forest Hills','40.71957','-73.84481'
-'11','Kew Gardens','40.70964','-73.83089'
-'14','East New York','40.6758','-73.90281'
-'12','Atlantic Terminal','40.684901','-73.97768'
-'13','Nostrand Avenue','40.67838','-73.94822'
-'15','Jamaica','40.6996','-73.80853'
-'17','Mets-Willets Point','40.75239','-73.8437'
-'18','Flushing Main Street','40.75789','-73.83135'"
-    @foreign = "'trip_id','arrival_time','departure_time','stop_id','stop_sequence'
-'GO204_172','00:01:00','00:01:00','8','1'
-'GO204_172','00:13:00','00:13:00','9','2'
-'GO204_172','00:18:00','00:18:00','10','3'
-'GO204_172','00:20:00','00:20:00','11','4'
-'GO204_172','00:24:00','00:26:00','15','5'
-'GO204_172','00:41:00','00:41:00','106','6'"
+    @target_key
   end
 
   # GET /texts/1
@@ -40,46 +23,67 @@ class TextsController < ApplicationController
   end
   
   def translate
+    foreign_key_location = 0
     primary_key_location = 0
-    foriegn_key_location = 0
-    puts params[:text][:foreign]
+
+    @originalx = params[:text][:original]
+    # @foreign = params[:text][:foreign]
+    @target  = params[:target_key] 
+
     # These loop through the column names and find the location of the matching key value pairs
-    params[:text][:primary].split(/\r\n/).first.split(',').each_with_index do |primary_column_name, index1|
-      params[:text][:foreign].split(/\r\n/).first.split(/, |,/).each_with_index do |foriegn_column_name, index2|
-        if foriegn_column_name == primary_column_name
-          primary_key_location = index1
-          foriegn_key_location = index2
-        end
+    @originalx.split(/\r\n/).first.split(',').each_with_index do |x, index|
+      if x.gsub('\'', '').gsub('"', '') == @target
+        primary_key_location = index
       end
     end
-    @primary = params[:text][:primary]
-    @foreign = params[:text][:foriegn]
+
+    @foreign.split(/\r\n/).first.split(',').each_with_index do |x, index|
+      if x.gsub('\'', '').gsub('"', '') == @target
+        foreign_key_location = index
+      end
+    end
 
     # This will organize the primary keys to be put into chronological order
-    orderindex = 1
-    organized = params[:text][:primary].split(/\r\n/)[1..-1].sort do |x,y|
+    @originalx = @originalx[0..1] + @originalx.split(/\r\n/)[1..-1].sort do |x,y|
       x.split(',')[primary_key_location].gsub('\'', '').to_i <=> y.split(',')[primary_key_location].gsub('\'', '').to_i
     end
-    puts 'holla'
-    puts params[:text][:foriegn]
-    organized.map.with_index do |x, i|
-      x_index = x.split(',')[primary_key_location].gsub('\'', '').to_i
-      if (i+1) != x_index
-        # params[:text][:foriegn].split(/\r\n/).map do |y|
-        #   if y.split(',')[foriegn_key_location] == x_index
-        #     puts (y.split(',')[0] = ('\''+(i+1).to_s+'\'')+ params[:text][:primary][params[:text][:primary].split(',')[0].length..-1])  
-        #   end
-        # end
-        (x.split(',')[0] = ('\''+(i+1).to_s+'\'')+ x[x.split(',')[0].length..-1])
+
+    @originalx = @originalx.map.with_index do |p_line, primary_index|
+      x_index = p_line.split(',')[primary_key_location].gsub('\'', '').to_i
+      if (primary_index+1) != x_index
+        @foreign = @foreign.split(/\r?\n/).map.with_index{ |f_line, foreign_index|
+          if f_line.split(',')[foreign_key_location].gsub('\'', '').to_i == x_index
+            f_line = f_line.split(',').map.with_index(0){ |a,b| 
+              if b == foreign_key_location
+                primary_index+1
+              else
+                a
+              end
+            }.join(',')
+            f_line
+          else
+            f_line
+          end
+        }.join("\n")
+        p_line = p_line.split(',').map.with_index{ |a,b|
+          if b == primary_key_location
+            '\'' + (primary_index + 1).to_s + '\''
+          else
+            a
+          end
+        }.join(',')
       else
-        x
+        p_line
       end
     end
-    # puts params[:text][:primary]
-    puts organized.class
+    puts "End result: ================================"
+    puts @originalx
+    puts @foreign
 
+  end
 
-
+  def some
+    render html: "<strong>Not Found</strong>".html_safe
   end
     
   # GET /texts/new

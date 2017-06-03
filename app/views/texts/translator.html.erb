@@ -1,5 +1,14 @@
-<%= form_for @text, url: '/texts/translate', method: :translate do |f|  %>
-	<%= f.text_area :primary, value: @primary %>
-	<%= f.text_area :foreign, value: @foreign %>
-	<%= f.submit %>
+<form action="translate">
+	<label>Target key:
+		<input type="text">
+	 </label>
+	<br>
+
+</form>
+
+
+<%= form_tag({action: :upload}, multipart: true) do %>
+  <%= file_field_tag 'picture' %>
 <% end %>
+
+<%= button_to "Add table to be reindexed", action: "some" %>

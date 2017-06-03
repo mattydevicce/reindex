@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170422212835) do
+ActiveRecord::Schema.define(version: 20170519110258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,13 @@ ActiveRecord::Schema.define(version: 20170422212835) do
     t.string   "stop_name"
     t.decimal  "stop_lat"
     t.decimal  "stop_lon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "texts", force: :cascade do |t|
+    t.string   "original"
+    t.string   "translated"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
